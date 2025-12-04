@@ -1,0 +1,35 @@
+name: The Spy Mission (Secrets)
+
+on: [workflow_dispatch]
+
+jobs:
+  top-secret-deployment:
+    runs-on: ubuntu-latest
+    
+    # We load the secret into the environment
+    env:
+      MY_PASSWORD: ${{ secrets.SUPER_SECRET_PASSWORD }}
+      PUBLIC_VAR: "I am visible to everyone"
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: 1. Print Public Info (Safe)
+        run: echo "Public Variable says: $PUBLIC_VAR"
+
+      - name: 2. Attempt to Print Secret (The Test)
+        # GitHub is smart. It will detect the secret and mask it!
+        run: |
+          echo "Deploying to Production Server..."
+          echo "Using Password: $MY_PASSWORD"
+          echo "Deployment Finished."
+
+      - name: 3. Verify Secret Logic
+        # We can use the secret in logic, even if we can't see it
+        run: |
+          if [ "$MY_PASSWORD" != "" ]; then
+            echo "Access Granted: The password was loaded successfully!"
+          else
+            echo "Access Denied: No password found."
+          fi
