@@ -1,0 +1,32 @@
+name: The Multiverse Experiment
+
+# 1. NEW TRIGGER: 'workflow_dispatch' adds a button to run this manually!
+on:
+  push:
+  workflow_dispatch:
+
+jobs:
+  test-the-matrix:
+    # 2. THE MATRIX: This defines our variations
+    strategy:
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+        version: [18, 20]
+
+    # 3. Use the variable from the matrix above
+    runs-on: ${{ matrix.os }}
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: ${{ matrix.version }}
+
+      - name: Verify Environment
+        run: |
+          echo "I am running on ${{ matrix.os }}"
+          echo "My Node version is:"
+          node -v
