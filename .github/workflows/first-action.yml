@@ -1,0 +1,23 @@
+name: My First Github Action
+
+# 1. THE TRIGGER: When should this run?
+on: [push]
+
+# 2. THE WORK: What should it actually do?
+jobs:
+  build-and-test:
+    # Where should it run? (Like the Docker image in CircleCI)
+    runs-on: ubuntu-latest
+
+    steps:
+      # Step A: Download your code (Standard Step)
+      - name: Checkout Code
+        uses: actions/checkout@v4
+
+      # Step B: Run a simple command
+      - name: Say Hello
+        run: echo "Hello Brother! GitHub Actions is running."
+
+      # Step C: Check the OS details
+      - name: Check System
+        run: uname -a
